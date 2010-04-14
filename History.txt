@@ -1,3 +1,6 @@
+=== 1.2.3 / 2010-04-13
+* Source code repository moved to http://github.com/clbustos/reportbuilder
+
 === 1.2.2 / 2010-04-06
 * Bug fix: Table should be parsed with #preformatted, not #text on Text output
 

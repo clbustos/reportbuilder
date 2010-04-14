@@ -8,8 +8,7 @@ require 'reportbuilder/image'
 #
 # == Use
 # 
-# 
-# * Using generic ReportBuilder#add, every object will be parsed using #report_building_FORMAT, #report_building or #to_s
+# 1) Using generic ReportBuilder#add, every object will be parsed using methods report_building_FORMAT, #report_building or #to_s
 # 
 #  require "reportbuilder"    
 #  rb=ReportBuilder.new
@@ -19,7 +18,6 @@ require 'reportbuilder/image'
 #  table.row([1,"John"])
 #  table.hr
 #  table.row([2,"Peter"])
-#  
 #  section.add(table) #  Section is a container for other methods
 #  rb.add(section) #  table have a #report_building method
 #  rb.add("Another text") #  used directly
@@ -28,7 +26,7 @@ require 'reportbuilder/image'
 #  rb.name="Html output"
 #  puts rb.to_html
 # 
-# * Using a block, you can control directly the builder
+# 2) Using a block, you can control directly the builder
 # 
 #  require "reportbuilder"    
 #  rb=ReportBuilder.new do
@@ -53,7 +51,7 @@ class ReportBuilder
   # Doesn't print a title if set to true
   attr_accessor :no_title
   # ReportBuilder version
-  VERSION = '1.2.2'
+  VERSION = '1.2.3'
   
   FormatNotFound=Class.new(Exception)
   # Available formats

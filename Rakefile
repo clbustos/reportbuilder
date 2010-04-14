@@ -16,7 +16,11 @@ Hoe.spec 'reportbuilder' do
   self.extra_dev_deps << ["nokogiri", "~>1.4"] 
 end
 
-task :release => [:tag] do 
+task :release  do 
+  version="v#{ReportBuilder::VERSION}"
+  sh %(git commit -a -m "Release #{version}")
+  sh %(git tag "#{version}")
+  sh %(git push origin --tags)
 end
 
 # vim: syntax=ruby
