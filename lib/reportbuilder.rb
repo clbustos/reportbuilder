@@ -51,7 +51,7 @@ class ReportBuilder
   # Doesn't print a title if set to true
   attr_accessor :no_title
   # ReportBuilder version
-  VERSION = '1.2.3'
+  VERSION = '1.2.4'
   
   FormatNotFound=Class.new(Exception)
   # Available formats
