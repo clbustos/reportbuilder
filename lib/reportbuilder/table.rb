@@ -75,6 +75,9 @@ class ReportBuilder
     def n_rows_no_hr
       @rows.inject(0) {|ac,v| ac+(v==:hr ? 0 : 1)}
     end
+    def n_rows
+      @rows.size
+    end
     # Adds a colspan on a cell
     #   table.add_row(["a",table.colspan("b",2)])
     def colspan(data,n)
@@ -128,7 +131,7 @@ class ReportBuilder
         0
       end
     end
-    
+
 
 
     ######################

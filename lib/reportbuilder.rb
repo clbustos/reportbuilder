@@ -87,7 +87,7 @@ class ReportBuilder
     end
   end
   # Create a new Report
-  def initialize(options=Hash.new,&block)
+  def initialize(options=Hash.new, &block)
     options[:name]||="Report "+Time.new.to_s
     @no_title=options.delete :no_title
     @name=options.delete :name 
