@@ -22,8 +22,8 @@ class ReportBuilder::Image
   end
   # Based on http://rubyquiz.com/quiz50.html
   def report_building_text(builder)
-    require 'RMagick'
-
+   
+      require 'RMagick'
 
     img = Magick::Image.read(@filename).first
 

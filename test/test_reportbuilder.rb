@@ -1,8 +1,4 @@
-require "minitest/unit"
-$:.unshift(File.dirname(__FILE__)+"/../lib")
-require "reportbuilder"
-require 'tempfile'
-MiniTest::Unit.autorun
+require(File.dirname(__FILE__)+"/helper_test.rb")
 class TestReportbuilder < MiniTest::Unit::TestCase
   def setup
     @datadir=File.dirname(__FILE__)+"/../data"
@@ -43,8 +39,9 @@ class TestReportbuilder < MiniTest::Unit::TestCase
       g.text "para"
       g.preformatted "pre"
       g.table(:header=>%w{th1 th2}) {row([1,2]); row([1,3])}
+      if $rmagick
       g.image @image
-     
+	end      
     }
     rb.add(a)
     out=rb.to_text
@@ -56,7 +53,9 @@ class TestReportbuilder < MiniTest::Unit::TestCase
       g.text "para"
       g.preformatted "pre"
       g.table(:header=>%w{th1 th2}) {row([1,2]); row([1,3])}
-      g.image @image
+      if $rmagick
+	g.image @image
+	end
     }
     
     out=rb.to_text

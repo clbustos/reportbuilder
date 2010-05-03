@@ -5,7 +5,7 @@ require 'nokogiri'
 MiniTest::Unit.autorun
 class TestReportbuilderSection < MiniTest::Unit::TestCase
   def setup
-    @name="Test Section"
+    @name_section="Test Section"
     @rp=ReportBuilder.new(:name=>"Test Section")
     s1=ReportBuilder::Section.new(:name=>"Section 1")
     @rp.add s1
@@ -20,7 +20,7 @@ class TestReportbuilderSection < MiniTest::Unit::TestCase
     @rp.add s2
   end
   def test_section_generate
-    text=ReportBuilder.generate(:name=>@name,:format=>:text) {
+    text=ReportBuilder.generate(:name=>@name_section,:format=>:text) {
       section(:name=>"Section 1") {
         text("Texto 1")
         text("2")

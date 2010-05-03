@@ -1,8 +1,5 @@
-$:.unshift(File.dirname(__FILE__)+"/../lib")
-require 'minitest/unit'
-require 'tmpdir'
-require "reportbuilder"
-MiniTest::Unit.autorun
+require(File.dirname(__FILE__)+"/helper_test.rb")
+
 class TestReportbuilderImage < MiniTest::Unit::TestCase
   def setup
     @tmpdir=Dir::mktmpdir
@@ -14,6 +11,7 @@ class TestReportbuilderImage < MiniTest::Unit::TestCase
     FileUtils.remove_entry_secure @tmpdir
   end
   def test_image_text
+
     expected= <<-HERE
 Test
 +--------------------------------+
@@ -33,9 +31,13 @@ Test
 |             **#*****           |
 +--------------------------------+
     HERE
+  if $rmagick
   real=@rp.to_s
   #expected=expected.gsub(/[^ ]/,'-')
   assert_match(/[^\s]{12}$/,real)
+  else
+  skip "Requires RMagick"
+  end
   end
   def test_image_html
     assert_match(/img src='images\/sheep.jpg'/, @rp.to_html)
