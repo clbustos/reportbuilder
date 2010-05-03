@@ -22,6 +22,7 @@ lib/reportbuilder/table.rb
 lib/reportbuilder/table/htmlbuilder.rb
 lib/reportbuilder/table/rtfbuilder.rb
 lib/reportbuilder/table/textbuilder.rb
+test/helper_test.rb
 test/test_html.rb
 test/test_image.rb
 test/test_reportbuilder.rb

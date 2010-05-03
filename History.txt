@@ -1,3 +1,6 @@
+=== 1.2.5 / 2010-04-30
+* Changed dependency on clbustos-rtf to 0.3.0
+
 === 1.2.4 / 2010-04-30
 * Bug fix on Rtf Builder for tables. Creation of hr generates an error
 

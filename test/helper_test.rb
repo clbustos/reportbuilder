@@ -5,6 +5,7 @@ rescue LoadError
 $rmagick=false
 end
 $:.unshift(File.dirname(__FILE__)+"/../lib")
+require 'nokogiri'
 require 'minitest/unit'
 require 'tmpdir'
 require "reportbuilder"

@@ -1,9 +1,7 @@
-require "minitest/unit"
-$:.unshift(File.dirname(__FILE__)+"/../lib")
-require "reportbuilder"
-require 'nokogiri'
+require(File.dirname(__FILE__)+"/helper_test.rb")
 
-MiniTest::Unit.autorun
+require 'tempfile'
+
 class TestReportbuilderTable < MiniTest::Unit::TestCase
   def setup
     super
@@ -54,11 +52,11 @@ class TestReportbuilderTable < MiniTest::Unit::TestCase
   end
   
   def test_rtf
+    tempfile=Tempfile.new('test.rtf')
     rb=ReportBuilder.new
     rb.add(@table)
-    rb.save_rtf("test.rtf")
-    
-    
+    rb.save_rtf(tempfile.path)
+
   end
   def test_table_text
     tg=ReportBuilder::Table::TextBuilder.new(@mock_generator, @table)

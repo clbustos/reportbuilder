@@ -1,8 +1,5 @@
-require "minitest/unit"
-$:.unshift(File.dirname(__FILE__)+"/../lib")
-require "reportbuilder"
-require 'nokogiri'
-MiniTest::Unit.autorun
+require(File.dirname(__FILE__)+"/helper_test.rb")
+
 class TestReportbuilderSection < MiniTest::Unit::TestCase
   def setup
     @name_section="Test Section"

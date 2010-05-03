@@ -1,11 +1,8 @@
-require "minitest/unit"
-$:.unshift(File.dirname(__FILE__)+"/../lib")
-require "reportbuilder"
+require(File.dirname(__FILE__)+"/helper_test.rb")
 require 'fileutils'
 require 'tmpdir'
-require 'nokogiri'
 require 'tempfile'
-MiniTest::Unit.autorun
+
 class TestReportbuilderHtml < MiniTest::Unit::TestCase
   def setup
     @tmpdir=Dir::mktmpdir
