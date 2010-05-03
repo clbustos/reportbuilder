@@ -7,9 +7,9 @@ MiniTest::Unit.autorun
 class TestReportbuilderTable < MiniTest::Unit::TestCase
   def setup
     super
-    @name="Table Test"
+    @name_table="Table Test"
     @header=%w{a bb ccc dddd eeee fff gggg hh i}
-    table=ReportBuilder::Table.new(:name=>@name, :header=>@header) do
+    table=ReportBuilder::Table.new(:name=>@name_table, :header=>@header) do
       row(["a","b","c","d","e","f","g","h","i"])
       row([colspan("a",2),"c",'d',rowspan("e",2),rowspan("f",2),"g",rowspan("h",3),"i"])
       row([colspan("a",3),'d', "g","i"])
