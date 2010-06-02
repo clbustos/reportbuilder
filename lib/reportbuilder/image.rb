@@ -84,6 +84,10 @@ class ReportBuilder::Image
         FileUtils.cp @filename, out
       end
     end
-    builder.html("<img src='images/#{File.basename(@filename)}' alt='#{@options[:alt]}' />")
+    if @filename=~/\.svg/
+      builder.html("<iframe src='images/#{File.basename(@filename)}' width='600' height='400'></iframe>")
+    else
+      builder.html("<img src='images/#{File.basename(@filename)}' alt='#{@options[:alt]}' />")
+    end
   end
 end
