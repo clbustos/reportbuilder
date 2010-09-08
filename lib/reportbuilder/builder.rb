@@ -28,8 +28,10 @@ class ReportBuilder
       @options=default_options.merge(options)
       @toc=[]
       @table_n=1
+      @graph_n=1
       @entry_n=1
       @list_tables=[]
+      @list_graphs=[]
 
     end
     # Parse the output. Could be reimplemented on subclasses
@@ -78,6 +80,9 @@ class ReportBuilder
     def table(opt=Hash.new, &block)
       parse_element(ReportBuilder::Table.new(opt,&block))
     end
+    def graph(opt=Hash.new, &block)
+      parse_element(ReportBuilder::Graph.new(opt,&block))
+    end
     # Create and parse an image.
     def image(filename,opt=Hash.new)
       parse_element(ReportBuilder::Image.new(filename,opt))
@@ -114,6 +119,14 @@ class ReportBuilder
       anchor="table_#{@table_n}"
       @table_n+=1
       @list_tables.push([anchor,name])
+      anchor
+    end
+    # Add an entry for  graph index.
+    # Returns the name of the anchor
+    def graph_entry(name)
+      anchor="graph_#{@graph_n}"
+      @graph_n+=1
+      @list_graphs.push([anchor,name])
       anchor
     end
   end

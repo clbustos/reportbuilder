@@ -1,2 +1,5 @@
 pkg
 doc
+examples/*.html
+examples/js
+examples/css

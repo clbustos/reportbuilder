@@ -2,6 +2,7 @@ require 'reportbuilder/builder'
 require 'reportbuilder/table'
 require 'reportbuilder/section'
 require 'reportbuilder/image'
+require 'reportbuilder/graph'
 
 # = Report Abstract Interface.
 # Creates text, html and rtf output, based on a common framework.
@@ -52,7 +53,7 @@ class ReportBuilder
   attr_accessor :no_title
   # ReportBuilder version
   VERSION = '1.2.5'
-  
+  DATA_DIR=File.dirname(__FILE__)+"/../data"
   FormatNotFound=Class.new(Exception)
   # Available formats
   def self.builder_for(format)
@@ -134,6 +135,11 @@ class ReportBuilder
     gen=Builder::Text.new(self, @options)
     gen.parse 
     gen.out
+  end
+  def save_text(file)
+    gen=Builder::Text.new(self, @options)
+    gen.parse
+     gen.save(file)    
   end
   alias_method :to_s, :to_text
 end

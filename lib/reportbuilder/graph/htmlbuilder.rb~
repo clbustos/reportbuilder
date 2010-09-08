@@ -1,0 +1,33 @@
+class ReportBuilder
+  class Graph
+    # @element and @builder
+    class HtmlBuilder < ElementBuilder
+      def generate()
+        @builder.js(ReportBuilder::DATA_DIR+"/jquery/excanvas.min.js")
+
+        @builder.js(ReportBuilder::DATA_DIR+"/jquery/jquery-1.4.2.min.js")
+        @builder.js(ReportBuilder::DATA_DIR+"/jquery/jquery.jqplot.min.js")
+        @builder.css(ReportBuilder::DATA_DIR+"/jquery/jquery.jqplot.css")
+        anchor=@builder.graph_entry(@element.name)
+        out="<a name='#{anchor}'></a><div id='graph_#{anchor}' style='width:#{@element.width}; height:#{@element.height}'> </div>"
+        out+="<script>
+          $.jqplot('graph_#{anchor}', #{@builder.parse_js(@element.data_values)},
+        { title: #{@builder.parse_js(@element.name)},
+          series: 
+          #{series_options}
+          
+        
+        });"
+        
+        
+        
+        out+="</script>"
+        
+        @builder.html(out)
+      end
+      def series_options
+        @builder.parse_js(@element.data_options)
+      end
+    end
+  end
+end

@@ -85,8 +85,10 @@ class ReportBuilder
       end
       def js(js)
         if(File.exists? js)
-          if(!File.exists? @directory+"/js/"+File.basename(js))
+          if(!File.exists? @directory+"/js") 
             FileUtils.mkdir @directory+"/js"
+          end
+          if(!File.exists? @directory+"/js/"+File.basename(js))
             FileUtils.cp js,@directory+"/js/"+File.basename(js)
           end
           @headers.push("<script type='text/javascript' src='js/#{File.basename(js)}'></script>")
@@ -95,15 +97,35 @@ class ReportBuilder
 
       def css(css)
         if(File.exists? css)
-          if(!File.exists? @directory+"/css/"+File.basename(css))
+          if(!File.exists? @directory+"/css") 
             FileUtils.mkdir @directory+"/css"
+          end        
+          if(!File.exists? @directory+"/css/"+File.basename(css))
             FileUtils.cp css, @directory+"/css/"+File.basename(css)
           end
           @headers.push("<link rel='stylesheet' type='text/css' href='css/#{File.basename(css)}' />")
         end
       end
 
-
+      def parse_js(d)
+        case d
+          when String
+            "\"#{d}\""
+          when TrueClass
+            'true'
+          when FalseClass
+            'false'
+          when Numeric
+            d.to_s
+          when Array
+            "["+d.map {|i| parse_js(i)}.join(", ")+"]"
+          when Hash
+            "{"+d.map {|k,v| parse_js(k)+" : "+parse_js(v)}.join(", ")+"}"
+            
+          else
+            d.to_s
+        end
+      end
       def text(t)
         ws=(" "*parse_level*2)
         @body << ws << "<p>#{t}</p>\n"
