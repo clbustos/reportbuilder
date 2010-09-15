@@ -107,7 +107,9 @@ class ReportBuilder
         end
       end
 
-      def parse_js(d)
+      def parse_js(d, level=0)
+        ei=5
+        indent=" "*(level*2)
         case d
           when String
             "\"#{d}\""
@@ -118,9 +120,19 @@ class ReportBuilder
           when Numeric
             d.to_s
           when Array
-            "["+d.map {|i| parse_js(i)}.join(", ")+"]"
+            if d.size>ei
+              sep,pre=",\n"+indent, "\n"+indent
+            else
+              sep, pre=", ", ""
+            end
+            pre+"["+d.map {|i| parse_js(i, level+1)}.join(sep)+pre+"]"
           when Hash
-            "{"+d.map {|k,v| parse_js(k)+" : "+parse_js(v)}.join(", ")+"}"
+            if d.size>ei
+              sep,  pre=",\n"+indent, "\n"+indent
+            else
+              sep, pre=", ", ""
+            end
+            pre+"{ "+d.map {|k,v| parse_js(k)+" : "+parse_js(v, level+1)}.join(sep)+pre+"}"
             
           else
             d.to_s

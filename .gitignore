@@ -1,5 +1,8 @@
+coverage*
 pkg
 doc
 examples/*.html
 examples/js
 examples/css
+test/*.html
+*~

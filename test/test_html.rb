@@ -1,7 +1,4 @@
 require(File.dirname(__FILE__)+"/helper_test.rb")
-require 'fileutils'
-require 'tmpdir'
-require 'tempfile'
 
 class TestReportbuilderHtml < MiniTest::Unit::TestCase
   def setup
@@ -57,10 +54,10 @@ class TestReportbuilderHtml < MiniTest::Unit::TestCase
     def report_building_html(generator)
       generator.css('"+@datadir+"/reportbuilder.css')
     end
-  end ")
-  @rp.add(mock_element)
-  assert_match(/link rel='stylesheet'.+css\/reportbuilder.css/, @rp.to_html)
-  assert(File.exists? @tmpdir+"/css/reportbuilder.css")
+    end ")
+    @rp.add(mock_element)
+    assert_match(/link rel='stylesheet'.+css\/reportbuilder.css/, @rp.to_html)
+    assert(File.exists? @tmpdir+"/css/reportbuilder.css")
   end
 
 end

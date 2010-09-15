@@ -1,7 +1,5 @@
 require(File.dirname(__FILE__)+"/helper_test.rb")
 
-require 'tempfile'
-
 class TestReportbuilderTable < MiniTest::Unit::TestCase
   def setup
     super

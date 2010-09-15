@@ -1,23 +1,19 @@
 class ReportBuilder
   class Graph
-    # @element and @builder
+    # Flot Wrapper
     class HtmlFlot < ElementBuilder
       def generate()
         @builder.js(ReportBuilder::DATA_DIR+"/flot/excanvas.min.js")
 
         @builder.js(ReportBuilder::DATA_DIR+"/flot/jquery.min.js")
         @builder.js(ReportBuilder::DATA_DIR+"/flot/jquery.flot.min.js")
+        
         anchor=@builder.graph_entry(@element.name)
         out="<a name='#{anchor}'></a><div id='graph_#{anchor}' style='width:#{@element.width}px; height:#{@element.height}px'> </div>"
-        out+="<script>
-          $.plot($('#graph_#{anchor}'),
-          #{series_options}
-          
-          );"
-        
-        
-        
-        out+="</script>"
+        out << "<script>\n$.plot($('#graph_#{anchor}'),"
+        out << @builder.parse_js(flot_series)+",\n" 
+        out << @builder.parse_js(flot_options)+"\n);"
+out+="</script>"
         
         @builder.html(out)
       end
@@ -29,62 +25,109 @@ class ReportBuilder
         when :scatter
           opt[:lines][:show]=false
           opt[:points][:show]=true
-
         when :bar
           opt[:lines][:show]=false
           opt[:bars][:show]=true
-
+        when :histogram
+          opt[:lines][:show]=false
+          opt[:bars][:show]=true
+          opt[:bars][:align]="center"
         else
           raise "Type doesn't exists"
         end
       end
+      
+      
+      def hash_to_camel(h)
+        out=Hash.new
+        h.each do |k,v|
+          out[to_camel(k)]=v
+        end
+        out
+      end
+      def to_camel(k)
+        k.to_s.gsub(/_([a-z])/) {|s| s.upcase[1]}.to_sym
+      end
+      
+      def flot_options
+        opts=Hash.new
+        opts[:title]=@element.title
+        opts[:axesDefaults]=axes_defaults if @element.axes_defaults.size>0
+        opts[:xaxis]=xaxis
+        opts[:yaxis]=yaxis
+        opts[:seriesDefaults]= series_defaults if @element.series_defaults.size>0
+        opts[:legend]=legend  if @element.legend.size>0
+        opts[:grid]=grid if @element.grid.size>0
+        opts
+      end
+      
+      
+      
+      def axes_defaults
+        hash_to_camel(@element.axes_defaults)
+      end
+      def xaxis
+        hash_to_camel(@element.xaxis)
+      end
+      def yaxis
+        hash_to_camel(@element.yaxis)
+      end
+      def legend
+        lo=@element.legend
+        lo.delete(:position) if lo[:position] and !["ne","nw","se","sw"].include? lo[:position]
+        hash_to_camel(lo)
+      end
+      def series_defaults
+        series_js(@element.series_defaults)
+      end
+      def grid
+        replace={}
+        out=Hash.new
+        @element.grid.each do |k,v|
+          if replace.include? k
+            out[replace[k]]=v
+          else
+            out[to_camel(k)]=v
+          end
+        end
+        out
+      end
+      def series_js(in_opt)
+        out_opt=Hash.new        
+        out_opt[:lines]=Hash.new
+        out_opt[:points]=Hash.new
+        out_opt[:bars]=Hash.new
+        in_opt.each_pair do |k,v|
+          case k
+            when :type
+              set_type(out_opt, v)
+            when :markers
+              out_opt[:points]=v
+            else
+              if out_opt[k] and out_opt[k].is_a? Hash
+                out_opt[:shadowSize]=v[:shadow_depth] if v[:shadow_depth]
+                out_opt[k]=out_opt[k].merge(v)
+              else
+                out_opt[k]=v
+              end
+          end
+        end
+        [:lines, :points, :bars].each do |v|
+          out_opt.delete(v) if out_opt[v].size==0
+        end
+        out_opt
+      end
       # Transform data options on jqPlot ones
-      def series_options
-        dv=@element.data_values
+      def flot_series
+        dv=@element.series_data
         i=0
-        own_options=@element.data_options.map do |in_opt|
+        own_options=@element.series_options.map do |in_opt|
           out_opt=Hash.new
           out_opt[:data]=dv[i]
           i+=1
-          out_opt[:lines]=Hash.new
-          out_opt[:points]=Hash.new
-          out_opt[:bars]=Hash.new
-          in_opt.each_pair do |k,v|
-            case k
-              when :type
-                
-                set_type(out_opt, v)
-              when :line_width
-                out_opt[:lines][:lineWidth]=v
-              when :show_marker
-                out_opt[:points][:show]=v
-              when :show_line
-                out_opt[:lines][:show]=v
-                
-              when /marker_(.+)/
-                mo=$1                
-                if mo=~/(.+)_(.+)/
-                  out_opt[:points]["#{$1}#{$2.capitalize}".to_sym]=v
-                elsif mo=='size'
-                  out_opt[:points][:radius]=v
-                else
-                  out_opt[:points][mo.to_sym]=v
-                end
-              when /(.+)_(.+)_(.+)/
-                out_opt["#{$1}#{$2.capitalize}#{$3.capitalize}".to_sym]=v
-              when /(.+)_(.+)/
-                out_opt["#{$1}#{$2.capitalize}".to_sym]=v
-
-              when :line_width
-                out_opt[:lines][:lineWidth]=v
-              else
-                out_opt[k]=v
-            end
-          end
-          out_opt
-          
+          out_opt.merge(series_js(in_opt))
         end
-        @builder.parse_js(own_options)
+        own_options
       end
       
     end
