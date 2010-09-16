@@ -20,6 +20,7 @@ out+="</script>"
       def set_type(opt,v)
         case v
         when :line
+          opt[:lines][:show]=true        
         when :pie
           raise "doesn't supported on flot"
         when :scatter
@@ -55,7 +56,7 @@ out+="</script>"
         opts[:axesDefaults]=axes_defaults if @element.axes_defaults.size>0
         opts[:xaxis]=xaxis
         opts[:yaxis]=yaxis
-        opts[:seriesDefaults]= series_defaults if @element.series_defaults.size>0
+        opts[:series]= series_defaults if @element.series_defaults.size>0
         opts[:legend]=legend  if @element.legend.size>0
         opts[:grid]=grid if @element.grid.size>0
         opts
@@ -92,6 +93,17 @@ out+="</script>"
         end
         out
       end
+      
+      def process_type(out_opt, k,v)
+        out_opt[:color]=v[:color] if !out_opt[:color]
+        out_opt[:shadowSize]=v[:shadow_depth] if v[:shadow_depth]
+        prev=out_opt[k]
+        if prev and prev.is_a? Hash
+          out_opt[k]=out_opt[k].merge(hash_to_camel(v))
+        else
+          out_opt[k]=hash_to_camel(v)
+        end
+      end
       def series_js(in_opt)
         out_opt=Hash.new        
         out_opt[:lines]=Hash.new
@@ -101,15 +113,17 @@ out+="</script>"
           case k
             when :type
               set_type(out_opt, v)
+            when :bars
+              v.delete(:width) # Uses width as number of ticks
+              process_type(out_opt, k,v)
             when :markers
-              out_opt[:points]=v
+              process_type(out_opt, k,v)
+              out_opt[:points]=out_opt.delete(:markers)
+            when :lines
+              v[:line_width]=v[:width] if v[:width]
+              process_type(out_opt, k,v)
             else
-              if out_opt[k] and out_opt[k].is_a? Hash
-                out_opt[:shadowSize]=v[:shadow_depth] if v[:shadow_depth]
-                out_opt[k]=out_opt[k].merge(v)
-              else
-                out_opt[k]=v
-              end
+              out_opt[to_camel(k)]=v
           end
         end
         [:lines, :points, :bars].each do |v|

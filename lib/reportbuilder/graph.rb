@@ -121,7 +121,7 @@ class ReportBuilder
     attr_reader :name
     attr_reader :number, :series_data_hash, :series_options_hash
     
-    attr_accessor_dsl :height, :width, :series_defaults, :legend, :title, :xaxis, :yaxis, :grid, :html_engine, :legend, :axes_defaults
+    attr_accessor_dsl :height, :width, :series_defaults, :title, :xaxis, :yaxis, :grid, :html_engine, :legend, :axes_defaults
     
     def initialize(options=Hash.new, &block)
       @number=@@n
