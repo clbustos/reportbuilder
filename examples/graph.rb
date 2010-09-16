@@ -2,7 +2,7 @@ $:.unshift(File.dirname(__FILE__)+"/../lib")
 require "reportbuilder"
 $base_dirname=File.dirname(__FILE__)
 rb=ReportBuilder.new(:directory=>$base_dirname) do |rb|
-  rb.graph(:name=>"Graph", :html_engine=>:jqplot) do |g|
+  rb.graph(:name=>"Graph", :html_engine=>:ploticus) do |g|
    g.series_defaults :color=>'red', :bars=>{:width=>5}
    g.legend :show=>true, :position=>'nw', :background_color=>'purple'
       g.xaxis :min=>-2, :max=>10, :ticks=>2

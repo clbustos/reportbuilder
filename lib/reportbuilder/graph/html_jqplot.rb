@@ -1,4 +1,3 @@
-require 'json'
 class ReportBuilder
   class Graph
     # @element and @builder

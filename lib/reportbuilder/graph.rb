@@ -1,3 +1,4 @@
+require 'reportbuilder/graph/ploticus'
 class ReportBuilder
   # Creates a Graph. API based on:
   # * jqPlot: [http://www.jqplot.com/]
@@ -121,8 +122,8 @@ class ReportBuilder
     attr_reader :name
     attr_reader :number, :series_data_hash, :series_options_hash
     
-    attr_accessor_dsl :height, :width, :series_defaults, :title, :xaxis, :yaxis, :grid, :html_engine, :legend, :axes_defaults
-    
+    attr_accessor_dsl :height, :width, :series_defaults, :title, :xaxis, :yaxis, :grid, :html_engine, :generic_engine, :legend, :axes_defaults
+    attr_reader :xmin,:xmax,:ymin, :ymax
     def initialize(options=Hash.new, &block)
       @number=@@n
       @@n+=1
@@ -143,7 +144,8 @@ class ReportBuilder
       default_options={
         :width=>600,
         :height=>400,
-        :html_engine=>:jqplot
+        :html_engine=>:jqplot,
+        :generic_engine=>:ploticus
       }
       @options=default_options.merge(options)
       @options.each {|k,v|
@@ -206,12 +208,54 @@ class ReportBuilder
       serie_options(name,d)
     end
     
+    def actuals_minmax
+      if @actuals_minmax.nil?
+        @actuals_minmax=Hash.new
+        series_data.each do |data|
+          data.each do |v|
+            @actuals_minmax[:xmin]||=v[0]
+            @actuals_minmax[:xmax]||=v[0]
+            @actuals_minmax[:ymin]||=v[1]
+            @actuals_minmax[:ymax]||=v[1]
+            @actuals_minmax[:xmin]=v[0] if @actuals_minmax[:xmin]>v[0]
+            @actuals_minmax[:xmax]=v[0] if @actuals_minmax[:xmax]<v[0]
+            @actuals_minmax[:ymin]=v[1] if @actuals_minmax[:ymin]>v[1]
+            @actuals_minmax[:ymax]=v[1] if @actuals_minmax[:ymax]<v[1]
+          end
+        end
+      end
+      @actuals_minmax
+    end
+    
+    def define_xy_ranges
+      @xmin=xaxis[:min] if xaxis[:min]
+      @xmax=xaxis[:max] if xaxis[:max]
+      @ymin=yaxis[:min] if yaxis[:min]
+      @ymin=yaxis[:max] if yaxis[:max]
+      @xmin||=actuals_minmax[:xmin]
+      @xmax||=actuals_minmax[:xmax]
+      @ymin||=actuals_minmax[:ymin]
+      @ymax||=actuals_minmax[:ymax]
+    end
+    
+      
+    
+    
+    
+    
+    
+    
     def report_building_html(builder)
       require "reportbuilder/graph/html_#{html_engine}"
       klass=("Html"+html_engine.capitalize).to_sym
       graph_builder=ReportBuilder::Graph.const_get(klass).new(builder, self)
       graph_builder.generate
     end
-    
+    def report_building(builder)
+      require "reportbuilder/graph/#{generic_engine}"
+      klass=(generic_engine.capitalize).to_sym
+      graph_builder = ReportBuilder::Graph.const_get(klass).new(builder, self)
+      graph_builder.generate
+    end
   end
 end
