@@ -1,4 +1,3 @@
-require 'reportbuilder/graph/ploticus'
 class ReportBuilder
   # Creates a Graph. API based on:
   # * jqPlot: [http://www.jqplot.com/]
@@ -114,7 +113,6 @@ class ReportBuilder
         define_method(sym.to_s+"=") do |*args|
           instance_variable_set("@#{sym_w_sm}", args[0])
         end
-        
       end
     end
 
@@ -145,7 +143,7 @@ class ReportBuilder
         :width=>600,
         :height=>400,
         :html_engine=>:jqplot,
-        :generic_engine=>:ploticus
+        :generic_engine=>:rchart
       }
       @options=default_options.merge(options)
       @options.each {|k,v|
@@ -238,12 +236,7 @@ class ReportBuilder
       @ymax||=actuals_minmax[:ymax]
     end
     
-      
-    
-    
-    
-    
-    
+
     
     def report_building_html(builder)
       require "reportbuilder/graph/html_#{html_engine}"

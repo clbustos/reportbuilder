@@ -15,16 +15,16 @@ class ReportBuilder::Image
       :chars => [ 'W', 'M', '$', '@', '#', '%', '^', 'x', '*', 'o', '=', '+',
       ':', '~', '.', ' ' ],
       :font_rows => 8,
-      :font_cols => 4
+      :font_cols => 4,
+      :width=>400,
+      :height=>300
     }
     @options=default_options.merge(options)
     @filename=filename
   end
   # Based on http://rubyquiz.com/quiz50.html
   def report_building_text(builder)
-   
-      require 'RMagick'
-
+    require 'RMagick'
     img = Magick::Image.read(@filename).first
 
     # Resize too-large images. The resulting image is going to be
@@ -72,20 +72,18 @@ class ReportBuilder::Image
     builder.preformatted(out)
   end
   def report_building_rtf(builder)
-    raise "Not implemented on RTF::Document. Use gem install thecrisoshow-ruby-rtf for support" unless builder.rtf.respond_to? :image
+    raise "Not implemented on RTF::Document. Use gem install clbustos-rtf for support" unless builder.rtf.respond_to? :image
     builder.rtf.image(@filename)
   end
   def report_building_html(builder)
     basedir=builder.directory+"/images"
     out=basedir+"/"+File.basename(@filename)
     if(File.exists? @filename)
-      if !File.exists? out
         FileUtils.mkdir_p basedir
         FileUtils.cp @filename, out
-      end
     end
     if @filename=~/\.svg/
-      builder.html("<iframe src='images/#{File.basename(@filename)}' width='600' height='400'></iframe>")
+      builder.html("<iframe src='images/#{File.basename(@filename)}' width='#{@options[:width]}' height='#{@options[:height]}'></iframe>")
     else
       builder.html("<img src='images/#{File.basename(@filename)}' alt='#{@options[:alt]}' />")
     end
