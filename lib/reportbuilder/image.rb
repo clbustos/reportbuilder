@@ -79,8 +79,8 @@ class ReportBuilder::Image
     basedir=builder.directory+"/images"
     out=basedir+"/"+File.basename(@filename)
     if(File.exists? @filename)
-        FileUtils.mkdir_p basedir
-        FileUtils.cp @filename, out
+      FileUtils.mkdir_p basedir
+      FileUtils.cp @filename, out
     end
     if @filename=~/\.svg/
       builder.html("<iframe src='images/#{File.basename(@filename)}' width='#{@options[:width]}' height='#{@options[:height]}'></iframe>")

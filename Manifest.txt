@@ -390,8 +390,6 @@ lib/reportbuilder/builder/text.rb
 lib/reportbuilder/graph.rb
 lib/reportbuilder/graph/html_flot.rb
 lib/reportbuilder/graph/html_jqplot.rb
-lib/reportbuilder/graph/html_ploticus.rb
-lib/reportbuilder/graph/ploticus.rb
 lib/reportbuilder/image.rb
 lib/reportbuilder/section.rb
 lib/reportbuilder/table.rb
