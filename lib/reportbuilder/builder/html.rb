@@ -5,7 +5,7 @@ class ReportBuilder
       attr_reader :directory
       def initialize(builder, options)
         super
-        @directory = @options.delete :directory
+        @directory        = @options.delete :directory
         @body=""
         @headers=[]
         @footers=[]
@@ -89,7 +89,7 @@ class ReportBuilder
             FileUtils.mkdir @directory+"/js"
           end
           if(!File.exists? @directory+"/js/"+File.basename(js))
-            FileUtils.cp js,@directory+"/js/"+File.basename(js)
+            FileUtils.cp js, @directory+"/js/"+File.basename(js)
           end
           @headers.push("<script type='text/javascript' src='js/#{File.basename(js)}'></script>")
         end

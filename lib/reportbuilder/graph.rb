@@ -1,8 +1,6 @@
 class ReportBuilder
   # Creates a Graph. API based on:
   # * jqPlot: [http://www.jqplot.com/]
-  # * SVG::Graph
-  # * Ploticus
   # 
   # == API Reference
   # All options could be not available on specifics builder. 

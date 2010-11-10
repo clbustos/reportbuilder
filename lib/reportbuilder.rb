@@ -61,6 +61,11 @@ class ReportBuilder
     Builder.inherited_classes.find {|m| m.code.include? format} 
   end
   # Generates and optionally save the report on one function
+  # 
+  # * options= Hash of options
+  #  * :filename => name of file. If not provided, returns output
+  #  * :format => format of output. See Builder subclasses
+  # * &block: block executed inside builder 
   def self.generate(options=Hash.new, &block)
     options[:filename]||=nil
     options[:format]||="text"

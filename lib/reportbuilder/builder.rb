@@ -83,10 +83,15 @@ class ReportBuilder
     def graph(opt=Hash.new, &block)
       parse_element(ReportBuilder::Graph.new(opt,&block))
     end
-    # Create and parse an image.
-    def image(filename,opt=Hash.new)
-      parse_element(ReportBuilder::Image.new(filename,opt))
+    # Create and parse an image, using a string or IO
+    def image_blob(blob, opt=Hash.new)
+      parse_element(ReportBuilder::ImageBlob.new(blob,opt))
     end
+    # Create and parse an image, using a filename
+    def image(filename, opt=Hash.new)
+      parse_element(ReportBuilder::ImageFilename.new(filename,opt))
+    end
+    
     # Create and parse an image. Use a block to insert element inside the block
     def section(opt=Hash.new, &block)
       parse_element(ReportBuilder::Section.new(opt,&block))

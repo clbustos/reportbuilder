@@ -5,7 +5,7 @@ class TestReportbuilderImage < MiniTest::Unit::TestCase
     @tmpdir=Dir::mktmpdir
     @rp=ReportBuilder.new(:no_name=>true, :directory=>@tmpdir)
     @datadir=File.dirname(__FILE__)+"/../data"
-    @rp.add(ReportBuilder::Image.new(@datadir+"/sheep.jpg"))
+    @rp.add(ReportBuilder::ImageFilename.new(@datadir+"/sheep.jpg"))
   end
   def teardown
     FileUtils.remove_entry_secure @tmpdir
@@ -31,13 +31,20 @@ Test
 |             **#*****           |
 +--------------------------------+
     HERE
-  if $rmagick
-  real=@rp.to_s
-  #expected=expected.gsub(/[^ ]/,'-')
-  assert_match(/[^\s]{12}$/,real)
-  else
-  skip "Requires RMagick"
+    if $rmagick
+      real=@rp.to_s
+      #expected=expected.gsub(/[^ ]/,'-')
+      assert_match(/[^\s]{12}$/,real)
+    else
+      skip "Requires RMagick"
+    end
   end
+  def test_image_blob
+    out=""
+    File.open(@datadir+"/sheep.jpg", "r") do |fp|
+      out << fp.gets
+    end
+    
   end
   def test_image_html
     assert_match(/img src='images\/sheep.jpg'/, @rp.to_html)
