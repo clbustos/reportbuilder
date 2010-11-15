@@ -26,7 +26,7 @@ class ReportBuilder
         end
         next_with_hr=false
 
-        @t.rows.each_with_index{|row|
+        @t.rows.each do |row|
           if row==:hr
             next_with_hr=true
             # Nothing
@@ -38,7 +38,7 @@ class ReportBuilder
             end
             row_i+=1
           end
-        }
+        end
 
       end
       def add_hr_on_top(row_i)

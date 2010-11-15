@@ -86,7 +86,7 @@ $.jqplot('graph_#{anchor}', #{@builder.parse_js(@element.series_data)},
         out
       end
       def to_camel(k)
-        k.to_s.gsub(/_([a-z])/) {|s| s.upcase[1]}.to_sym
+        k.to_s.gsub(/_([a-z])/) {|s| s.upcase[1,1]}.to_sym
       end
       def series_js(in_opt)
         out_opt=Hash.new
