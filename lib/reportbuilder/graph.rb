@@ -238,7 +238,7 @@ class ReportBuilder
     
     def report_building_html(builder)
       require "reportbuilder/graph/html_#{html_engine}"
-      klass=("Html"+html_engine.capitalize).to_sym
+      klass=("Html"+html_engine.to_s.capitalize).to_sym
       graph_builder=ReportBuilder::Graph.const_get(klass).new(builder, self)
       graph_builder.generate
     end

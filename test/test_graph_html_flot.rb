@@ -1,6 +1,6 @@
 require(File.dirname(__FILE__)+"/helper_test.rb")
 require 'json'
-class TestReportbuilderGraphHtmlJqplot < MiniTest::Unit::TestCase
+class TestReportbuilderGraphHtmlFlot < MiniTest::Unit::TestCase
   def setup
     @tmpdir=Dir::mktmpdir
     @datadir=File.dirname(__FILE__)+"/../data"
