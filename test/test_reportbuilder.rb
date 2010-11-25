@@ -39,7 +39,7 @@ class TestReportbuilder < MiniTest::Unit::TestCase
       g.text "para"
       g.preformatted "pre"
       g.table(:header=>%w{th1 th2}) {row([1,2]); row([1,3])}
-      g.image @image if $rmagick      
+      g.image @image if ReportBuilder.has_rmagick?
     }
     rb.add(a)
     out=rb.to_text
@@ -51,7 +51,7 @@ class TestReportbuilder < MiniTest::Unit::TestCase
       g.text "para"
       g.preformatted "pre"
       g.table(:header=>%w{th1 th2}) {row([1,2]); row([1,3])}
-      if $rmagick
+      if ReportBuilder.has_rmagick?
         g.image @image
       end
     }

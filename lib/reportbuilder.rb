@@ -60,6 +60,14 @@ class ReportBuilder
     format=format.to_s.downcase
     Builder.inherited_classes.find {|m| m.code.include? format} 
   end
+  def self.has_rmagick?
+    begin
+      require 'RMagick'
+      true
+    rescue LoadError
+      false
+    end
+  end
   # Generates and optionally save the report on one function
   # 
   # * options= Hash of options

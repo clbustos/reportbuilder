@@ -87,9 +87,19 @@ class ReportBuilder
     def image_blob(blob, opt=Hash.new)
       parse_element(ReportBuilder::ImageBlob.new(blob,opt))
     end
-    # Create and parse an image, using a filename
-    def image(filename, opt=Hash.new)
+    # Create and parse an image, using a string or IO
+    def image_filename(filename, opt=Hash.new)
       parse_element(ReportBuilder::ImageFilename.new(filename,opt))
+    end
+    
+    # Create and parse an image, detecting if is a Filename or a
+    # blob
+    def image(img, opt=Hash.new)
+      if img.is_a? String and File.exists? img
+        parse_element(ReportBuilder::ImageFilename.new(img,opt))
+      else
+        parse_element(ReportBuilder::ImageBlob.new(img,opt))        
+      end
     end
     
     # Create and parse an image. Use a block to insert element inside the block
