@@ -119,7 +119,7 @@ class ReportBuilder
     # return filename
     def generate_raster_from_svg(dir)
       
-      out_file="#{dir}/#{@id}.jpg"
+      out_file="#{dir}/#{@id}.png"
       `rsvg '#{filename}' #{out_file}`
       out_file
     end
