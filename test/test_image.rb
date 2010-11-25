@@ -11,7 +11,6 @@ class TestReportbuilderImage < MiniTest::Unit::TestCase
   end
   def test_image_text
     @rp.add(ReportBuilder::ImageFilename.new(@datadir+"/sheep.jpg"))
-
     expected= <<-HERE
 Test
 +--------------------------------+
@@ -49,7 +48,6 @@ Test
     assert_equal(out, File.read(image_blob.filename))
     assert_match(/img src='#{image_blob.url}'/, @rp.to_html)
     assert_match(/\\pict\\picw128\\pich112\\bliptag\d+\\jpegblip/, @rp.to_rtf)
-    
   end
   def test_image_blob_svg
     svg='<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="200px" height="50px">
@@ -63,6 +61,7 @@ Test
     assert_equal(svg, File.read(image_blob.filename))
     assert_match(/embed.+src='#{image_blob.url}'/, @rp.to_html)
     assert_match(/\\pict\\picw200\\pich50\\bliptag\d+\\pngblip/, @rp.to_rtf)
+    
   end  
   def test_image_html
     @rp.add(ReportBuilder::ImageFilename.new(@datadir+"/sheep.jpg"))

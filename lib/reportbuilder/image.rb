@@ -118,9 +118,8 @@ class ReportBuilder
     end
     # return filename
     def generate_raster_from_svg(dir)
-      
       out_file="#{dir}/#{@id}.png"
-      `rsvg '#{filename}' #{out_file}`
+      image_magick.write(out_file)
       out_file
     end
     def report_building_rtf(builder)
@@ -150,7 +149,13 @@ class ReportBuilder
       end
     end
     def image_magick
-      Magick::Image.from_blob(@blob)
+      that=self
+      img=Magick::Image.from_blob(@blob) { 
+        if that.type=='svg'
+          self.format='SVG'
+        end
+      }
+      img.first
     end
     def create_file(directory)
       FileUtils.mkdir_p directory+"/images"
