@@ -28,23 +28,24 @@ class ReportBuilder
     # Array of headers
     attr_accessor :header, :name
     # Size for each column
-    attr_reader :max_cols
+    attr_reader   :max_cols
     # Array of rows
-    attr_reader :rows
+    attr_reader   :rows
+    attr_accessor :options
     # Create a new table.
     # Options: :name, :header
     # Use:
     #   table=ReportBuilder::Table.new(:header =>["var1","var2"])
     def initialize(opts=Hash.new, &block)
       raise ArgumentError,"opts should be a Hash" if !opts.is_a? Hash
-      opts=DEFAULT_OPTIONS.merge opts
-      if opts[:name].nil?
+      @options=DEFAULT_OPTIONS.merge opts
+      if @options[:name].nil?
         @name= "Table #{@@n}"
         @@n+=1
       else
-        @name=opts[:name]
+        @name=@options.delete :name
       end
-      @header=opts[:header]
+      @header=@options.delete :header
       @rows=[]
       @max_cols=[]
       if block
@@ -124,6 +125,12 @@ class ReportBuilder
       table_builder=ReportBuilder::Table::RtfBuilder.new(builder, self)
       table_builder.generate
     end
+    def report_building_pdf(builder)
+      require 'reportbuilder/table/pdfbuilder'
+      table_builder=ReportBuilder::Table::PdfBuilder.new(builder, self)
+      table_builder.generate
+    end
+    
     def total_width # :nodoc:
       if @max_cols.size>0
         @max_cols.inject(0){|a,v| a+(v+3)}+1

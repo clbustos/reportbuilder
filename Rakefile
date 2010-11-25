@@ -12,7 +12,7 @@ Hoe.spec 'reportbuilder' do
   self.rubyforge_name = 'ruby-statsample'
   self.developer('Claudio Bustos', 'clbustos_at_gmail.com')
   self.url = "http://ruby-statsample.rubyforge.org/reportbuilder/"
-  self.extra_deps << ["clbustos-rtf","~>0.3.0"] << ['text-table', "~>1.2"]
+  self.extra_deps << ["clbustos-rtf","~>0.3.0"] << ['text-table', "~>1.2"] << ["prawn",">0"]
   self.extra_dev_deps << ["nokogiri", "~>1.4"] 
 end
 

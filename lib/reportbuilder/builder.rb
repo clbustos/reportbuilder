@@ -157,4 +157,4 @@ end
 require 'reportbuilder/builder/text'
 require 'reportbuilder/builder/html'
 require 'reportbuilder/builder/rtf'
-
+require 'reportbuilder/builder/pdf'

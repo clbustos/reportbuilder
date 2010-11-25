@@ -33,14 +33,19 @@ class ReportBuilder
         @header_styles=Hash.new {|h,k|
           cs=CharacterStyle.new
           cs.font=@font
-          cs.font_size=@options[:font_size]+(8-k)*2
+          cs.font_size=@options[:font_size]+(8-k)*1.5
           cs.bold=true
           ps=ParagraphStyle.new
           ps.justification = ParagraphStyle::CENTER_JUSTIFY
           h[k]={:cs=>cs, :ps=>ps}
         }        
       end
-      
+      def parse
+         unless @builder.no_title
+           header(0,@builder.name)
+         end
+        parse_cycle(@builder)
+      end
       def self.code
         %w{rtf}
       end

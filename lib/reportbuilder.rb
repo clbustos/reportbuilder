@@ -118,17 +118,22 @@ class ReportBuilder
     self
   end
   # Returns an Html output
-  def to_html()
+  def to_html
     gen = Builder::Html.new(self,@options)
     gen.parse
     gen.out
   end
   # Returns a RTF output
-  def to_rtf()
+  def to_rtf
     gen = Builder::Rtf.new(self, @options)
     gen.parse
     gen.out
-  end  
+  end
+  def to_pdf
+    gen = Builder::Pdf.new(self, @options)
+    gen.parse
+    gen.out
+  end
   # Save a rtf file
   def save_rtf(filename)
     gen = Builder::Rtf.new(self,@options)
@@ -143,6 +148,14 @@ class ReportBuilder
     gen.parse
     gen.save(file)
   end
+  # Save a pdf file
+  def save_pdf(file)
+    options=@options.dup
+    gen=Builder::Pdf.new(self, options)
+    gen.parse
+    gen.save(file)
+  end  
+
   # Returns a Text output
   def to_text()
     gen=Builder::Text.new(self, @options)
@@ -154,5 +167,6 @@ class ReportBuilder
     gen.parse
      gen.save(file)    
   end
+  
   alias_method :to_s, :to_text
 end
