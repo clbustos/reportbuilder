@@ -385,6 +385,7 @@ examples/using_a_block.rb
 lib/reportbuilder.rb
 lib/reportbuilder/builder.rb
 lib/reportbuilder/builder/html.rb
+lib/reportbuilder/builder/pdf.rb
 lib/reportbuilder/builder/rtf.rb
 lib/reportbuilder/builder/text.rb
 lib/reportbuilder/graph.rb
@@ -394,6 +395,7 @@ lib/reportbuilder/image.rb
 lib/reportbuilder/section.rb
 lib/reportbuilder/table.rb
 lib/reportbuilder/table/htmlbuilder.rb
+lib/reportbuilder/table/pdfbuilder.rb
 lib/reportbuilder/table/rtfbuilder.rb
 lib/reportbuilder/table/textbuilder.rb
 test/helper_test.rb
