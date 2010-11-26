@@ -1,4 +1,5 @@
 require 'prawn'
+require 'prawn-svg'
 require 'pp'
 class ReportBuilder
   class Builder
@@ -35,6 +36,7 @@ class ReportBuilder
       end
       # Add a paragraph of text.
       def text(t)
+
         @pdf.text(t)
       end
       # Add a header of level <tt>level</tt> with text <tt>t</tt>

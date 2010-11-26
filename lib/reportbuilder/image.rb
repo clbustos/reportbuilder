@@ -10,6 +10,7 @@ class ReportBuilder
     attr_accessor :font_cols
     attr_accessor :width
     attr_accessor :height
+    attr_accessor :svg_raster
     attr_accessor :type
     attr_reader :filename
     attr_reader :url
@@ -22,7 +23,7 @@ class ReportBuilder
         @name="Image #{@@n}"
         @@n+=1
       else
-        @name=options[:name]
+        @name=options.delete :name
       end
       
       default_options={
@@ -31,17 +32,23 @@ class ReportBuilder
         ':', '~', '.', ' ' ],
         :font_rows => 8,
         :font_cols => 4,
-        :width=>400,
-        :height=>300
+        :width=>nil,
+        :height=>nil,
+        :svg_raster=>false
       }
-      @options=default_options.merge(options)
+      @options=default_options.merge options
       @options.each {|k,v|
         self.send("#{k}=",v) if self.respond_to? k
       }
     end 
     # Get image_magick version of the image
     def image_magick
-      raise "Must be implemented"
+      if ReportBuilder.has_rmagick?
+        _image_magick if respond_to? :_image_magick
+        
+      else
+        raise "Requires RMagick"
+      end
     end
     # Based on http://rubyquiz.com/quiz50.html
     def report_building_text(builder)
@@ -97,16 +104,20 @@ class ReportBuilder
     end
     # Generate the code for images on html
     def generate_tag_html(builder)
+      attrs=""
+      attrs+=" height='#{:height}' " if :height
+      attrs+=" width='#{:width}' " if :width
+      
       if @type=='svg'
         builder.html("
           <div class='image'>
           <!--[if IE]>
-          <embed class='svg' height='#{@options[:height]}' src='#{@url}' width='#{@options[:width]}'></embed>
+          <embed class='svg'  src='#{@url}' #{attrs}'></embed>
           <![endif]-->
-            <object class='svg' data='#{@url}' height='#{@options[:height]}' type='image/svg+xml' width='#{@options[:width]}'></object>
+            <object class='svg' data='#{@url}' type='image/svg+xml' #{attrs} ></object>
         </div>")
       else
-        builder.html("<img src='#{@url}' alt='#{@options[:alt]}' />")
+        builder.html "<img src='#{@url}' alt='#{alt}' #{attrs} />"
       end
     end
     def create_file(directory)
@@ -116,12 +127,29 @@ class ReportBuilder
       create_file(builder.directory)
       generate_tag_html(builder)
     end
+    def report_building_pdf(builder)
+      require 'tmpdir'
+      dir=Dir::mktmpdir
+      create_file(dir)
+      if @type=='svg'
+        if svg_raster
+          builder.pdf.image(generate_raster_from_svg(dir))
+        else
+        # Prawn-svg is not ready for production.
+        y=builder.pdf.y
+        builder.pdf.svg File.read(@filename), :at=>[0, y-60]
+        end
+      else
+        builder.pdf.image(filename, @options)
+      end
+    end
     # return filename
     def generate_raster_from_svg(dir)
       out_file="#{dir}/#{@id}.png"
       image_magick.write(out_file)
       out_file
     end
+    
     def report_building_rtf(builder)
       require 'tmpdir'
       directory=Dir::mktmpdir
@@ -148,14 +176,14 @@ class ReportBuilder
         end
       end
     end
-    def image_magick
-      that=self
-      img=Magick::Image.from_blob(@blob) { 
-        if that.type=='svg'
-          self.format='SVG'
-        end
-      }
-      img.first
+    def _image_magick
+        that=self
+        img=Magick::Image.from_blob(@blob) { 
+          if that.type=='svg'
+            self.format='SVG'
+          end
+        }
+        img.first
     end
     def create_file(directory)
       FileUtils.mkdir_p directory+"/images"
@@ -176,7 +204,7 @@ class ReportBuilder
       File.basename(@filename)=~/\.(.+)$/
       @type=File.basename($1)
     end
-    def image_magick
+    def _image_magick
       Magick::Image.read(@filename).first
     end
     def create_file(directory)
