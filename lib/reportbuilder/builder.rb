@@ -59,15 +59,16 @@ class ReportBuilder
     end    
     
     # Parse one object, using this workflow
-    # * If is a block, evaluate it
-    # * Use #report_building_CODE, where CODE is one of the codes defined by #code
+    # * If is a block, evaluate it in the context of the builder
+    # * Use method #report_building_CODE, where CODE is one of the codes defined by
+    #   ReportBuilder::Builder.code
     # * Use #report_building
     # * Use #to_s
     def parse_element(element)
       methods=self.class.code.map {|m| ("report_building_"+m).intern}
       
       if element.is_a? Proc
-        element.arity<1 ? instance_eval(&element) : element.call(self)
+        element.arity < 1 ? instance_eval(&element) : element.call(self)
       elsif method=methods.find {|m| element.respond_to? m}
         element.send(method, self)
       elsif element.respond_to? :report_building
@@ -127,7 +128,6 @@ class ReportBuilder
       @toc.push([anchor, name, parse_level])
       anchor
     end
-
     # Add an entry for  table index.
     # Returns the name of the anchor
     def table_entry(name)

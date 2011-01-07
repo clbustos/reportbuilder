@@ -17,6 +17,7 @@ class ReportBuilder
         super
         @pdf=Prawn::Document.new(options)
         @pdf.font_size=@options[:font_size]
+
       end
       
       def self.code
@@ -36,13 +37,14 @@ class ReportBuilder
       end
       # Add a paragraph of text.
       def text(t)
-
         @pdf.text(t)
       end
       # Add a header of level <tt>level</tt> with text <tt>t</tt>
       # Level works similar to h
       def header(level, t)
-        @pdf.text t, :size=>15-level
+        @pdf.pad 5 do 
+          @pdf.text t, {:size=>15-level*1.5,:align=>:center}
+        end
       end
       # Add preformatted text. 
       def preformatted(t)
@@ -50,12 +52,18 @@ class ReportBuilder
           @pdf.text t 
         end
       end
+      def at_end
+        @pdf.number_pages(@options[:number_pages], [@pdf.bounds.right - 50, 0]  ) if @options[:numerate_pages]        
+        
+      end
       # Returns pdf code for report
       def out
+        at_end
         @pdf.render
       end
       # Save pdf file
       def save(filename)
+        at_end
         @pdf.render_file(filename)
       end
       # Do nothing on this builder 
