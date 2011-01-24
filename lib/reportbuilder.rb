@@ -78,9 +78,8 @@ class ReportBuilder
     options[:filename]||=nil
     options[:format]||="text"
     
-    if options[:filename] and options[:filename]=~/\.(\w+?)$/
-      options[:format]=$1
-    end
+    options[:format]=self.get_format_from_filename(options[:filename]) if options[:filename]
+    
     file=options.delete(:filename)
     format=options.delete(:format)
     rb=ReportBuilder.new(options)
@@ -100,11 +99,17 @@ class ReportBuilder
       out
     end
   end
+  def self.get_format_from_filename(filename)
+    filename=~/\.(\w+?)$/
+    $1
+  end
   # Create a new Report
   def initialize(options=Hash.new, &block)
     options[:name]||="Report "+Time.new.to_s
+    
     @no_title=options.delete :no_title
     @name=options.delete :name 
+    @name=@name.to_s
     @options=options
     @elements=Array.new
     add(block) if block
@@ -133,6 +138,10 @@ class ReportBuilder
     gen = Builder::Pdf.new(self, @options)
     gen.parse
     gen.out
+  end
+  def save(filename)
+    format=(self.class).get_format_from_filename(filename)
+    send("save_#{format}", filename)
   end
   # Save a rtf file
   def save_rtf(filename)
