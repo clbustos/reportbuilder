@@ -1,5 +1,4 @@
-require(File.dirname(__FILE__)+"/helper_test.rb")
-
+require(File.expand_path(File.dirname(__FILE__)+"/helper_test.rb"))
 class TestReportbuilderTable < MiniTest::Unit::TestCase
   def setup
     super

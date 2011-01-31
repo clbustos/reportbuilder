@@ -1,4 +1,4 @@
-require(File.dirname(__FILE__)+"/helper_test.rb")
+require(File.expand_path(File.dirname(__FILE__)+"/helper_test.rb"))
 require 'json'
 class TestReportbuilderGraphHtmlJqplot < MiniTest::Unit::TestCase
   def setup

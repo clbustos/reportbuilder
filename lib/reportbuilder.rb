@@ -76,9 +76,8 @@ class ReportBuilder
   # * &block: block executed inside builder 
   def self.generate(options=Hash.new, &block)
     options[:filename]||=nil
+    options[:format]||=self.get_format_from_filename(options[:filename]) if options[:filename]    
     options[:format]||="text"
-    
-    options[:format]=self.get_format_from_filename(options[:filename]) if options[:filename]
     
     file=options.delete(:filename)
     format=options.delete(:format)
@@ -87,7 +86,7 @@ class ReportBuilder
     begin
       builder=builder_for(format).new(rb, options)
     rescue NameError  => e
-      raise FormatNotFound.new(e)
+      raise ReportBuilder::FormatNotFound.new(e)
     end
     builder.parse
     out=builder.out

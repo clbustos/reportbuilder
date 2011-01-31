@@ -27,7 +27,7 @@ class ReportBuilder::Section
   end
 
   def report_building_text(builder)
-    builder.text(("="*builder.parse_level)+" "+name)
+    builder.text(("="*builder.parse_level)+" #{name}")
     builder.parse_cycle(self)
   end
 

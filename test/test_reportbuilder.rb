@@ -1,4 +1,4 @@
-require(File.dirname(__FILE__)+"/helper_test.rb")
+require(File.expand_path(File.dirname(__FILE__)+"/helper_test.rb"))
 class TestReportbuilder < MiniTest::Unit::TestCase
   def setup
     @datadir=File.dirname(__FILE__)+"/../data"
@@ -89,24 +89,27 @@ class TestReportbuilder < MiniTest::Unit::TestCase
   
   def test_generate
     txt_file=Tempfile.new("test.txt")
+    
     ReportBuilder.generate(:name=>"Test", :filename=>txt_file.path) do
       text("hola")
     end
     
-    text=ReportBuilder.generate(:format=>:text,:name=>"Test") do 
+    text=ReportBuilder.generate(:format=>:text, :name=>"Test") do 
       text("hola")
     end
+    
     assert_match(/^Test\nhola$/,text)
     assert_equal(text, File.read(txt_file.path))
+    
     html_file=Tempfile.new("test.html")
     html=ReportBuilder.generate(:name=>"Test", :format=>:html) do
       text("hola")
     end
+    
     ReportBuilder.generate(:name=>"Test", :filename=>html_file.path,:format=>:html) do
       text("hola")
     end
     
     assert_equal(html,File.read(html_file.path))
-    
   end
 end

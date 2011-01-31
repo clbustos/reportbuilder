@@ -1,4 +1,4 @@
-require(File.dirname(__FILE__)+"/helper_test.rb")
+require(File.expand_path(File.dirname(__FILE__)+"/helper_test.rb"))
 
 class TestReportbuilderGraph < MiniTest::Unit::TestCase
   def test_init_without_block
