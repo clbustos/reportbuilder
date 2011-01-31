@@ -4,7 +4,7 @@
 
 == DESCRIPTION:
 
-Report Abstract Interface. Creates text, html,pdf and rtf output, based on a common framework.
+Report Abstract Interface. Creates text, html, pdf and rtf output, based on a common framework.
 
 == FEATURES
 
@@ -62,8 +62,13 @@ http://github.com/clbustos/reportbuilder
 * RMagick, only to generate text output of images (see examples/image.rb)
 
 == INSTALL:
+With RVM
 
-  sudo gem install reportbuilder
+  $ gem install reportbuilder
+
+without RVM
+
+  $ sudo gem install reportbuilder
 
 == LICENSE:
 

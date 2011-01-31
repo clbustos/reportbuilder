@@ -5,7 +5,7 @@ require 'reportbuilder/image'
 require 'reportbuilder/graph'
 
 # = Report Abstract Interface.
-# Creates text, html and rtf output, based on a common framework.
+# Creates text, html,pdf and rtf output, based on a common framework.
 #
 # == Use
 # 
