@@ -52,7 +52,7 @@ class ReportBuilder
   # Doesn't print a title if set to true
   attr_accessor :no_title
   # ReportBuilder version
-  VERSION = '1.4.0'
+  VERSION = '1.4.1'
   DATA_DIR=File.dirname(__FILE__)+"/../data"
   FormatNotFound=Class.new(Exception)
   # Available formats

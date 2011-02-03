@@ -1,3 +1,10 @@
+=== 1.4.1 / 2011-02-03
+* Add generic ReportBuilder#save method, to save according to extension
+* Better titles layout on PDF.
+* Pages could be numbered on PDF
+* Small fixed on docs
+* Test works on Ruby 1.9.3
+
 === 1.4.0 / 2010-11-26
 * Basic support for pdf creation, using Prawn. SVG insertion could be realized using Prawn-svg (as vectors) or Rmagick (as bitmap)
 * Added SimpleCov support
