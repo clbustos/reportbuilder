@@ -94,6 +94,10 @@ class ReportBuilder
       def out
         @rtf.to_rtf
       end
+      # Do nothing
+      def new_page
+        
+      end
       # Save rtf file
       def save(filename)
         File.open(filename,'wb')  {|file| file.write(@rtf.to_rtf)

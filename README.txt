@@ -62,6 +62,7 @@ http://github.com/clbustos/reportbuilder
 * RMagick, only to generate text output of images (see examples/image.rb)
 
 == INSTALL:
+
 With RVM
 
   $ gem install reportbuilder

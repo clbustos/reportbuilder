@@ -138,6 +138,9 @@ class ReportBuilder
             d.to_s
         end
       end
+      def new_page
+        @body << "<hr />\n"
+      end
       def text(t)
         ws=(" "*parse_level*2)
         @body << ws << "<p>#{t}</p>\n"

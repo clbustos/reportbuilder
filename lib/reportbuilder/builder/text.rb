@@ -23,6 +23,9 @@ class ReportBuilder
       def preformatted(t)
         @out << t << "\n"
       end
+      def new_page
+        @out << "\n\n"
+      end
       def html(t)
         # Nothing printed
       end

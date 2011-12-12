@@ -46,6 +46,10 @@ class ReportBuilder
           @pdf.text t, {:size=>15-level*1.5,:align=>:center}
         end
       end
+      # Start a new page! (duh)
+      def new_page
+        @pdf.start_new_page
+      end
       # Add preformatted text. 
       def preformatted(t)
         @pdf.font("Courier") do 

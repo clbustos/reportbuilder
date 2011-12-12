@@ -52,7 +52,7 @@ class ReportBuilder
   # Doesn't print a title if set to true
   attr_accessor :no_title
   # ReportBuilder version
-  VERSION = '1.4.1'
+  VERSION = '1.4.2'
   DATA_DIR=File.dirname(__FILE__)+"/../data"
   FormatNotFound=Class.new(Exception)
   # Available formats
@@ -104,8 +104,7 @@ class ReportBuilder
   end
   # Create a new Report
   def initialize(options=Hash.new, &block)
-    options[:name]||="Report "+Time.new.to_s
-    
+    options[:name]||="Report "+Time.now.to_s
     @no_title=options.delete :no_title
     @name=options.delete :name 
     @name=@name.to_s
